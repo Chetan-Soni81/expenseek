@@ -12,15 +12,13 @@ class ProfileModel {
   double get totolSpending => _totalSpending;
 
   ProfileModel.fromJson(dynamic json) {
-    _id = json['id'];
-    _name = json['Name'];
     _username = json['Username'];
     _password = json['Password'];
     _totalSpending = json['totalSpending'];
   }
 
   Map<String, Object?> toCreate() {
-    return {'Name': _name, 'Username': _username, 'Password': _password};
+    return {'Username': _username, 'Password': _password};
   }
 
   void addSpending(double amount) {

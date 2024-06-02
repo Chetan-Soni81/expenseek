@@ -6,27 +6,26 @@ import 'package:sqflite/sqflite.dart' as sql;
 class SQLHelper {
   static Future<void> createTables(sql.Database database) async {
     await database.execute("""
-Create Table Profile (
-  id Integer Primary Key Autoincrement not null,
-  Username varchar(50) not null,
-  Password varchar(30) not null,
-  Name varchar(100) not null
-  totalSpending REAL default 0
-)
+CREATE TABLE Profile (
+  Username VARCHAR(50) NOT NULL,
+  Password VARCHAR(30) NOT NULL,
+  totalSpending REAL DEFAULT 0
+);
 
-Create Table Category (
-  id Integer Primary key Autoincrement not null,
-  categoryName varchar(100) not null
-)
+CREATE TABLE Category (
+  id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  categoryName VARCHAR(100) NOT NULL
+);
 
-Create Table Expense(
-      id Integer Primary key Autoincrement not null,
-      amount real not null default 0,
-      created timestamp not null default CURRENT_TIMESTAMP,
-      updated timestamp,
-      category int,
-      note varchar(255)
-      )
+CREATE TABLE Expense (
+  id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  amount REAL NOT NULL DEFAULT 0,
+  created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated TIMESTAMP,
+  category INTEGER,
+  note VARCHAR(255),
+  FOREIGN KEY (category) REFERENCES Category(id) ON DELETE SET NULL
+);
     """);
   }
 
@@ -67,30 +66,23 @@ Create Table Expense(
     return id;
   }
 
-  static Future<ProfileModel> getProfileByUsername(String username) async {
+  static Future<ProfileModel?> getProfile() async {
     final db = await SQLHelper.db();
-    var data = await db.query('Profile',
-        where: "username = ? ", whereArgs: [username], limit: 1);
+    var data = await db.query('Profile', limit: 1);
+
+    if (data.isEmpty) return null;
 
     return ProfileModel.fromJson(data[0]);
   }
 
-  static Future<ProfileModel> getProfileById(int id) async {
-    final db = await SQLHelper.db();
-    var data =
-        await db.query('Profile', where: "id = ? ", whereArgs: [id], limit: 1);
-
-    return ProfileModel.fromJson(data[0]);
-  }
-
-  static Future<int> loginProfile(String? username, String? password) async {
+  static Future<bool> loginProfile(String? username, String? password) async {
     final db = await SQLHelper.db();
     var data = await db.query('Profile',
         where: "username = ? and password = ? ",
         whereArgs: [username, password],
         limit: 1);
 
-    return data.isEmpty ? 0 : int.parse(data[0]['id'].toString());
+    return data.isEmpty ? false : true;
   }
 
   static Future<List<CategoryModel>> getAllCategories() async {
