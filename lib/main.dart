@@ -1,7 +1,13 @@
+import 'dart:io';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:expenseek/screens/registration_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  if (Platform.isWindows || Platform.isLinux) {
+    // Initialize FFI
+    sqfliteFfiInit();
+  }
   runApp(const MyApp());
 }
 

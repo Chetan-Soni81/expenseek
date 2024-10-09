@@ -12,7 +12,10 @@ class DbHelper {
       );
 
       create table tbl_note(
-      id ${DbTypes.idType}
+        id ${DbTypes.idType},
+        title ${DbTypes.textType},
+        description ${DbTypes.textType},
+        createdAt ${DbTypes.timestampType}
       )
 
       create table tbl_expense(
@@ -23,6 +26,17 @@ class DbHelper {
         description ${DbTypes.textType},
         createdAt ${DbTypes.timestampType}
       );
-""");
+
+      create table tbl_user(
+        username TEXT PRIMARY KEY,
+        pin ${DbTypes.textType}
+      );
+    """);
+  }
+
+  static Future<sql.Database> db() async {
+    return sql.openDatabase("expenseek_data.db",version: 1,onCreate: (sql.Database database, int version) async {
+      await createTables(database);
+    });
   }
 }
