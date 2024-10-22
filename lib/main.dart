@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:expenseek/screens/entry_screen.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:expenseek/screens/registration_screen.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: RegistrationScreen(key: key,),
+      home: EntryScreen(key: key,),
     );
   }
 }

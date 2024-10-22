@@ -52,13 +52,13 @@ class DbHelper {
     return results.isNotEmpty; // Return true if records exist, false otherwise
   }
 
-  static Future<String?> loginUser(String username, String pin) async {
+  static Future<String?> loginUser(UserModel user) async {
     final db = await DbHelper.db();
 
     final List<Map<String, dynamic>> results = await db.query(
         TableHelper.tblUser,
         where: "username = ? and pin = ?",
-        whereArgs: [username, pin],
+        whereArgs: [user.username, user.pin],
         limit: 1);
 
     if (results.isNotEmpty) {
@@ -68,5 +68,13 @@ class DbHelper {
     }
 
     return "";
+  }
+
+  static Future<int> registerUser(UserModel user) async {
+    final db = await DbHelper.db(); 
+
+    final id = db.insert(TableHelper.tblUser, user.toJson(), conflictAlgorithm: sql.ConflictAlgorithm.replace);
+
+    return id;
   }
 }
