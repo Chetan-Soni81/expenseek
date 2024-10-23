@@ -1,6 +1,6 @@
 class DbTypes {
-  static const String idType = "INT PRIMARY KEY AUTOINCREMENT";
-  static const String intType = "INT NOT NULL";
+  static const String idType = "INTEGER PRIMARY KEY AUTOINCREMENT";
+  static const String intType = "INTEGER NOT NULL";
   static const String realType = "REAL NOT NULL";
   static const String textType = "TEXT NOT NULL";
   static const String dateType = "TEXT NOT NULL";

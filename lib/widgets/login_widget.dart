@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 
-Widget loginWidget() {
+Widget loginWidget({required String username,required TextEditingController pinController, required Function action }) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -12,26 +12,27 @@ Widget loginWidget() {
       const SizedBox(
         height: 16,
       ),
-      const Text("Welcome, Chetan Soni"),
+      Text("Welcome, $username"),
       const SizedBox(
         height: 16,
       ),
-      const Pinput(
+      Pinput(
         obscureText: true,
         length: 6,
+        controller: pinController,
+        onCompleted: (value) => action(),
       ),
       const SizedBox(
         height: 16,
       ),
-      SizedBox(
-        width: double.infinity, // Makes the button full width
-        child: ElevatedButton(
-          onPressed: () {
-            // Button action
-          },
-          child: const Text('Register'),
-        ),
-      ),
+      // SizedBox(
+      //   width: double.infinity, // Makes the button full width
+      //   child: ElevatedButton(
+      //       // Button action
+      //     onPressed: () => action(),
+      //     child: const Text('Login'),
+      //   ),
+      // ),
     ],
   );
 }

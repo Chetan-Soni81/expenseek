@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 
-Widget registrationWidget() {
+Widget registrationWidget(
+    {required TextEditingController usernameController,
+    required TextEditingController pinController,
+    required Function action}) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -12,8 +15,8 @@ Widget registrationWidget() {
       const SizedBox(
         height: 16,
       ),
-      const TextField(
-        decoration: InputDecoration(
+      TextField(
+        decoration: const InputDecoration(
             fillColor: Color(0xFFeceef6),
             filled: true,
             border: OutlineInputBorder(
@@ -21,13 +24,15 @@ Widget registrationWidget() {
                 borderSide: BorderSide.none),
             labelText: "Username",
             labelStyle: TextStyle(color: Colors.black)),
+        controller: usernameController,
       ),
       const SizedBox(
         height: 16,
       ),
-      const Pinput(
+      Pinput(
         obscureText: true,
         length: 6,
+        controller: pinController,
       ),
       const SizedBox(
         height: 16,
@@ -35,9 +40,8 @@ Widget registrationWidget() {
       SizedBox(
         width: double.infinity, // Makes the button full width
         child: ElevatedButton(
-          onPressed: () {
-            // Button action
-          },
+          // Button action
+          onPressed: () => action(),
           child: const Text('Register'),
         ),
       ),

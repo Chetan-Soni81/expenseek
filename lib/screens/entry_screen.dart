@@ -14,7 +14,15 @@ class EntryScreen extends StatelessWidget {
       child: Obx(
         () => Padding(
           padding: const EdgeInsets.all(16),
-          child: c.isLogin.value ? loginWidget() : registrationWidget(),
+          child: c.isLogin.isNotEmpty
+              ? loginWidget(
+                  username: c.isLogin.value,
+                  pinController: c.pinController,
+                  action: c.loginAction)
+              : registrationWidget(
+                  usernameController: c.usernameController,
+                  pinController: c.pinController,
+                  action: c.registerAction),
         ),
       ),
     ));
