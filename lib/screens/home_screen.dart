@@ -1,110 +1,50 @@
+import 'package:expenseek/controllers/home_controller.dart';
 import 'package:expenseek/widgets/custom_widget.dart';
+import 'package:expenseek/widgets/home_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
+  HomeScreen({super.key});
+  final HomeController c = Get.put(HomeController());
   @override
   Widget build(BuildContext context) {
-    final tileWidth = ((MediaQuery.of(context).size.width - 48) / 2);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Home"),
+        title: Obx(() => switch(c.screenActive.value) { 0 =>  const Text("Home"), 2 => const Text("Categories"), _ => const Text("Home")},),
         centerTitle: true,
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.settings))
         ],
+        elevation: 0,
       ),
-      body: Center(
-        child: Column(
-          children: [
-            const Column(
-              children: [
-                const SizedBox(height: 16),
-                const Text(
-                  "This month spending",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                Text(
-                  "₹ 1,00,000",
-                  style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                // Container(
-                //   padding: const EdgeInsets.all(24),
-                //   decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(16),
-                //   color: Colors.grey[200],
-                //   ),
-                //   height: 120,
-                //   width:  tileWidth,
-                //   child: const Column(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [
-                //       Text("Day", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),),
-                //       Text("₹ 1,000.00", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
-                //      ],
-
-                //     ),
-                // ),
-                customTile(
-                  child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Current Day",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
-                      ),
-                      Text(
-                        "₹ 1,000.00",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w700),
-                      ),
-                    ],
-                  ),
-                  context: context,
-                ),
-                // Add spacing between tiles
-                customTile(
-                  child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Current Week",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
-                      ),
-                      Text(
-                        "₹ 7,000.00",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w700),
-                      ),
-                    ],
-                  ),
-                  context: context,
-                )
-              ],
-            ),
-            ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context, index) => new ListTile(),
-            ),
-          ],
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add),
+      ),
+      bottomNavigationBar: Obx ( () =>BottomNavigationBar(
+        onTap: (value) => c.screenActive.value = value,
+        currentIndex: c.screenActive.value,
+        items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: "Home",
         ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.stacked_bar_chart),
+          label: "Stats",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.category),
+          label: "Categories",
+        ),
+      ]),),
+      body: Center(
+      child: Obx(() => switch (c.screenActive.value) {
+        0 => homePanel(context: context, c: c),
+        2 => categoryPanel(context: context, c: c),
+        _ => homePanel(context: context, c: c)
+      }),
       ),
     );
   }

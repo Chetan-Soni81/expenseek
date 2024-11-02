@@ -47,6 +47,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
       home: EntryScreen(key: key),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
