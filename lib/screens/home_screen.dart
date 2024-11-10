@@ -1,5 +1,4 @@
 import 'package:expenseek/controllers/home_controller.dart';
-import 'package:expenseek/widgets/custom_widget.dart';
 import 'package:expenseek/widgets/home_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,16 +9,16 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Obx(() => switch(c.screenActive.value) { 0 =>  const Text("Home"), 2 => const Text("Categories"), _ => const Text("Home")},),
-        centerTitle: true,
-        actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.settings))
-        ],
-        elevation: 0,
-      ),
+      // appBar: AppBar(
+      //   title: Obx(() => switch(c.screenActive.value) { 0 =>  const Text("Home"), 2 => const Text("Categories"), _ => const Text("Home")},),
+      //   centerTitle: true,
+      //   actions: [
+      //     IconButton(onPressed: () {}, icon: const Icon(Icons.settings))
+      //   ],
+      //   elevation: 0,
+      // ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => c.doClick(),
         child: const Icon(Icons.add),
       ),
       bottomNavigationBar: Obx ( () =>BottomNavigationBar(

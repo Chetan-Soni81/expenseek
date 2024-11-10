@@ -5,19 +5,34 @@ import 'package:flutter/material.dart';
 Widget homePanel({required BuildContext context, required HomeController c}) {
   return Column(
     children: [
-      const Column(
+      Column(
         children: [
           const SizedBox(height: 16),
+          const Padding(
+            padding: const EdgeInsets.all(20),
+            child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Text(
+                      "Home",
+                      style:
+                          TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                ]),
+          ),
           const Text(
             "This month spending",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
           ),
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
           Text(
-            "₹ 1,00,000",
-            style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+            "₹ ${c.totalAmount.value}",
+            style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
           )
         ],
       ),
@@ -46,17 +61,17 @@ Widget homePanel({required BuildContext context, required HomeController c}) {
           //     ),
           // ),
           customTile(
-            child: const Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Current Day",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
                 Text(
-                  "₹ 1,000.00",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                  "₹ ${c.dayAmount.value}",
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                 ),
               ],
             ),
@@ -64,17 +79,17 @@ Widget homePanel({required BuildContext context, required HomeController c}) {
           ),
           // Add spacing between tiles
           customTile(
-            child: const Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Current Week",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
                 Text(
-                  "₹ 7,000.00",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                  "₹ ${c.weekAmount.value}",
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                 ),
               ],
             ),
@@ -87,12 +102,15 @@ Widget homePanel({required BuildContext context, required HomeController c}) {
       ),
       Expanded(
         child: ListView.builder(
-          itemCount: 10,
+          itemCount: c.expenses.length,
           itemBuilder: (context, index) => Card(
             elevation: 0,
-            margin: EdgeInsets.all(8),
+            margin: const EdgeInsets.all(8),
             color: Colors.white,
-            child: ListTile(),
+            child: ListTile(
+              title: Text(c.expenses.value[index].title),
+              subtitle: Text(c.expenses.value[index].createdAt.toString().split('.')[0]),
+            ),
           ),
         ),
       )
@@ -104,23 +122,55 @@ Widget categoryPanel(
     {required BuildContext context, required HomeController c}) {
   return Column(
     children: [
+      const SizedBox(height: 16),
+      const Padding(
+        padding: EdgeInsets.all(20),
+        child: Center(
+          child: Text(
+            "Categories",
+            style: TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
+          ),
+        ),
+      ),
       customTile(
-          context: context,
-          width: MediaQuery.of(context).size.width - 32,
-          child: const Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Total Categories",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-              ),
-              Text(
-                "0",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
-              )
-            ],
-          )),
+        context: context,
+        width: MediaQuery.of(context).size.width - 32,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Total Categories",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+            ),
+            Text(
+              c.categories.length.toString(),
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
+            ),
+            
+          ],
+        ),
+      ),
+      const SizedBox(
+        height: 12,
+      ),
+      Expanded(
+        child: ListView.builder(
+          itemCount: c.categories.length ,
+          padding: const EdgeInsets.all(16),
+          itemBuilder: (context, index) =>  Card(
+            surfaceTintColor: Colors.purple,
+            shape: RoundedRectangleBorder(),
+            margin:const  EdgeInsets.only(bottom: 16),
+            color: Colors.white,
+            child: ListTile(
+               trailing: Icon(Icons.delete),
+              title: Text(c.categories.value[index].categoryName, style: const TextStyle(fontWeight: FontWeight.w500),),
+              subtitle: Text(c.categories.value[index].createdAt.toString().split('.')[0]),
+            ),
+          ),
+        ),
+      )
     ],
   );
 }
