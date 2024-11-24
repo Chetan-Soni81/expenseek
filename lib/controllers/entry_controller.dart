@@ -27,6 +27,13 @@ class EntryController extends GetxController {
     int Uid = await DbHelper.registerUser(user);
 
     print(Uid);
+
+    String? username = await DbHelper.getUserById(Uid);
+
+    if(username !=null && username.isNotEmpty) {
+      Get.off(() => HomeScreen(), arguments: username);
+      return;
+    }
   }
 
   loginAction() async {

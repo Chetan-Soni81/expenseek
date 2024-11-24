@@ -67,6 +67,7 @@ class HomeController extends GetxController {
       var result = await DbHelper.insertExpense(expense);
       loadExpenses();
       Get.back();
+      categories.value = categories.where((x) => x.id != 0).toList();
     }
   }
 

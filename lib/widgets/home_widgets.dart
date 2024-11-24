@@ -1,7 +1,9 @@
 import 'package:expenseek/controllers/home_controller.dart';
+import 'package:expenseek/helpers/format_helper.dart';
 import 'package:expenseek/widgets/custom_widget.dart';
 import 'package:flutter/material.dart';
 
+//Home Panel
 Widget homePanel({required BuildContext context, required HomeController c}) {
   return Column(
     children: [
@@ -31,7 +33,7 @@ Widget homePanel({required BuildContext context, required HomeController c}) {
             height: 16,
           ),
           Text(
-            "₹ ${c.totalAmount.value}",
+            "₹ ${c.totalAmount.value.nFormat()}",
             style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
           )
         ],
@@ -69,9 +71,12 @@ Widget homePanel({required BuildContext context, required HomeController c}) {
                   "Current Day",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
-                Text(
-                  "₹ ${c.dayAmount.value}",
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                Expanded(
+                  child: Text(
+                    "₹ ${c.dayAmount.value.nFormat()}",
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.w700),
+                  ),
                 ),
               ],
             ),
@@ -87,9 +92,12 @@ Widget homePanel({required BuildContext context, required HomeController c}) {
                   "Current Week",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
-                Text(
-                  "₹ ${c.weekAmount.value}",
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                Expanded(
+                  child: Text(
+                    "₹ ${c.weekAmount.value.nFormat()}",
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.w700),
+                  ),
                 ),
               ],
             ),
@@ -108,8 +116,16 @@ Widget homePanel({required BuildContext context, required HomeController c}) {
             margin: const EdgeInsets.all(8),
             color: Colors.white,
             child: ListTile(
-              title: Text(c.expenses.value[index].title),
-              subtitle: Text(c.expenses.value[index].createdAt.toString().split('.')[0]),
+              trailing: Text(
+                "₹ ${c.expenses.value[index].amount.nFormat()}",
+                style:
+                    const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+              ),
+              title: Text(
+                c.expenses.value[index].title,
+                style: const TextStyle(fontWeight: FontWeight.w500),
+              ),
+              subtitle: Text(c.expenses.value[index].createdAt.dFormat()),
             ),
           ),
         ),
@@ -118,6 +134,7 @@ Widget homePanel({required BuildContext context, required HomeController c}) {
   );
 }
 
+// Category Panel
 Widget categoryPanel(
     {required BuildContext context, required HomeController c}) {
   return Column(
@@ -147,7 +164,6 @@ Widget categoryPanel(
               c.categories.length.toString(),
               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
             ),
-            
           ],
         ),
       ),
@@ -156,17 +172,20 @@ Widget categoryPanel(
       ),
       Expanded(
         child: ListView.builder(
-          itemCount: c.categories.length ,
+          itemCount: c.categories.length,
           padding: const EdgeInsets.all(16),
-          itemBuilder: (context, index) =>  Card(
+          itemBuilder: (context, index) => Card(
             surfaceTintColor: Colors.purple,
-            shape: RoundedRectangleBorder(),
-            margin:const  EdgeInsets.only(bottom: 16),
+            shape: const RoundedRectangleBorder(),
+            margin: const EdgeInsets.only(bottom: 16),
             color: Colors.white,
             child: ListTile(
-               trailing: Icon(Icons.delete),
-              title: Text(c.categories.value[index].categoryName, style: const TextStyle(fontWeight: FontWeight.w500),),
-              subtitle: Text(c.categories.value[index].createdAt.toString().split('.')[0]),
+              trailing: const Icon(Icons.delete),
+              title: Text(
+                c.categories.value[index].categoryName,
+                style: const TextStyle(fontWeight: FontWeight.w500),
+              ),
+              subtitle: Text(c.categories.value[index].createdAt.dFormat()),
             ),
           ),
         ),

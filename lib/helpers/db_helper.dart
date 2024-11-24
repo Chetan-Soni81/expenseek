@@ -87,6 +87,25 @@ class DbHelper {
     return "";
   }
 
+   static Future<String?> getUserById(int user) async {
+    final db = await DbHelper.db();
+
+    final List<Map<String, dynamic>> results = await db.query(
+        TableHelper.tblUser,
+        where: "id = ?",
+        whereArgs: [user],
+        limit: 1);
+
+    if (results.isNotEmpty) {
+      final user = UserModel.fromJson(results.first);
+
+      return user.username;
+    }
+
+    return "";
+  }
+
+
   static Future<int> registerUser(UserModel user) async {
     final db = await DbHelper.db();
 
