@@ -21,29 +21,49 @@ class HomeScreen extends StatelessWidget {
         onPressed: () => c.doClick(),
         child: const Icon(Icons.add),
       ),
-      bottomNavigationBar: Obx ( () =>BottomNavigationBar(
-        onTap: (value) => c.screenActive.value = value,
-        currentIndex: c.screenActive.value,
-        items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: "Home",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.stacked_bar_chart),
-          label: "Stats",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.category),
-          label: "Categories",
-        ),
-      ]),),
+      bottomNavigationBar: Obx(
+        () => BottomNavigationBar(
+            onTap: (value) {
+              c.screenActive.value = value;
+              c.pageController.animateToPage(
+                value, // Page index
+                duration:
+                    const Duration(milliseconds: 300), // Duration of animation
+                curve: Curves.easeInOut, // Animation curve
+              );
+            },
+            currentIndex: c.screenActive.value,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: "Home",
+              ),
+              // BottomNavigationBarItem(
+              //   icon: Icon(Icons.stacked_bar_chart),
+              //   label: "Stats",
+              // ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.category),
+                label: "Categories",
+              ),
+            ]),
+      ),
       body: Center(
-      child: Obx(() => switch (c.screenActive.value) {
-        0 => homePanel(context: context, c: c),
-        2 => categoryPanel(context: context, c: c),
-        _ => homePanel(context: context, c: c)
-      }),
+        // child: Obx(() => switch (c.screenActive.value) {
+        //   0 => homePanel(context: context, c: c),
+        //   2 => categoryPanel(context: context, c: c),
+        //   _ => homePanel(context: context, c: c)
+        // }),
+        child: Obx(() => PageView(
+              controller: c.pageController,
+              children: [
+                homePanel(context: context, c: c),
+                categoryPanel(context: context, c: c)
+              ],
+              onPageChanged: (i) {
+                c.screenActive.value = i;
+              },
+            )),
       ),
     );
   }

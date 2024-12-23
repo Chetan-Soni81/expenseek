@@ -17,6 +17,7 @@ class HomeController extends GetxController {
   RxDouble totalAmount = 0.0.obs;
   RxDouble weekAmount = 0.0.obs;
   RxDouble dayAmount = 0.0.obs;
+  PageController pageController = PageController();
 
   @override
   void onReady() {
