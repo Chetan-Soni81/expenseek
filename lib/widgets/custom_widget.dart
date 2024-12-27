@@ -12,7 +12,7 @@ Widget customTile(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        color: Colors.purple.shade50,
+        color: Colors.purple.shade50, 
       ),
       height: 120,
       width: width ?? tileWidth,
@@ -26,11 +26,13 @@ Widget expenseBottomSheet(
     TextEditingController? title,
     TextEditingController? amount,
     TextEditingController? description}) {
-      title?.text = "";
-      amount?.text = "";
-      description?.text = "";
-      val.value = 0;
-      categories.any((e) => e.id == 0) ? "" : categories.add(CategoryModel(id: 0, name: "Select a Category"));
+  title?.text = "";
+  amount?.text = "";
+  description?.text = "";
+  val.value = 0;
+  categories.any((e) => e.id == 0)
+      ? ""
+      : categories.add(CategoryModel(id: 0, name: "Select a Category"));
   return SingleChildScrollView(
     child: Padding(
       padding: const EdgeInsets.all(20),
@@ -133,5 +135,14 @@ Widget categoryBottomSheet(
         ],
       ),
     ),
+  );
+}
+
+Widget customCard({ required Widget child }) {
+  return Card(
+    elevation: 0,
+    margin: const EdgeInsets.all(8),
+    color: Colors.white,
+    child: child,
   );
 }

@@ -111,10 +111,7 @@ Widget homePanel({required BuildContext context, required HomeController c}) {
       Expanded(
         child: ListView.builder(
           itemCount: c.expenses.length,
-          itemBuilder: (context, index) => Card(
-            elevation: 0,
-            margin: const EdgeInsets.all(8),
-            color: Colors.white,
+          itemBuilder: (context, index) => customCard(
             child: ListTile(
               trailing: Text(
                 "₹ ${c.expenses.value[index].amount.nFormat()}",
@@ -174,11 +171,7 @@ Widget categoryPanel(
         child: ListView.builder(
           itemCount: c.categories.length,
           padding: const EdgeInsets.all(16),
-          itemBuilder: (context, index) => Card(
-            surfaceTintColor: Colors.purple,
-            shape: const RoundedRectangleBorder(),
-            margin: const EdgeInsets.only(bottom: 16),
-            color: Colors.white,
+          itemBuilder: (context, index) => customCard(
             child: ListTile(
               trailing: const Icon(Icons.delete),
               title: Text(

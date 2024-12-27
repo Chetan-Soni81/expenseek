@@ -49,11 +49,7 @@ class HomeScreen extends StatelessWidget {
             ]),
       ),
       body: Center(
-        // child: Obx(() => switch (c.screenActive.value) {
-        //   0 => homePanel(context: context, c: c),
-        //   2 => categoryPanel(context: context, c: c),
-        //   _ => homePanel(context: context, c: c)
-        // }),
+        
         child: Obx(() => PageView(
               controller: c.pageController,
               children: [

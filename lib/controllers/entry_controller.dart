@@ -24,14 +24,14 @@ class EntryController extends GetxController {
     var user =
         UserModel(username: usernameController.text, pin: pinController.text);
 
-    int Uid = await DbHelper.registerUser(user);
+    int uId = await DbHelper.registerUser(user);
 
-    print(Uid);
+    // print(Uid);
 
-    String? username = await DbHelper.getUserById(Uid);
+    // String? username = await DbHelper.getUserById(Uid);
 
-    if(username !=null && username.isNotEmpty) {
-      Get.off(() => HomeScreen(), arguments: username);
+    if(uId > 0) {
+      Get.off(() => HomeScreen(), arguments: uId.toString());
       return;
     }
   }

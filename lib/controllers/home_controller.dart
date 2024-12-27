@@ -77,7 +77,7 @@ class HomeController extends GetxController {
       switch (screenActive.value) {
         0 => expenseBottomSheet(
             action: addExpense, categories: categories, val: categoryVal, title: titleController, amount: amountController, description: descriptionController),
-        2 => categoryBottomSheet(
+        1 => categoryBottomSheet(
             action: addCategory, controller: categoryNameController),
         _ => Column(
             children: [
