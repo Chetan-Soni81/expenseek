@@ -38,10 +38,10 @@ class HomeScreen extends StatelessWidget {
                 icon: Icon(Icons.home),
                 label: "Home",
               ),
-              // BottomNavigationBarItem(
-              //   icon: Icon(Icons.stacked_bar_chart),
-              //   label: "Stats",
-              // ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.stacked_bar_chart),
+                label: "Stats",
+              ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.category),
                 label: "Categories",
@@ -54,6 +54,7 @@ class HomeScreen extends StatelessWidget {
               controller: c.pageController,
               children: [
                 homePanel(context: context, c: c),
+                statsPanel(context: context, c: c),
                 categoryPanel(context: context, c: c)
               ],
               onPageChanged: (i) {

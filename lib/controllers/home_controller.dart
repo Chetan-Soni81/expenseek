@@ -9,6 +9,7 @@ class HomeController extends GetxController {
   RxInt screenActive = 0.obs;
   RxList<CategoryModel> categories = <CategoryModel>[].obs;
   RxList<ExpenseModel> expenses = <ExpenseModel>[].obs;
+  RxList<Map<String, double>> chartData = <Map<String, double>>[].obs;
   TextEditingController categoryNameController = TextEditingController();
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -30,6 +31,8 @@ class HomeController extends GetxController {
     var result = await DbHelper.getAllCategories();
 
     categories.value = result;
+    
+    chartData.value = await DbHelper.getExpenseByCategory();
   }
 
   void loadExpenses() async {
@@ -40,6 +43,7 @@ class HomeController extends GetxController {
     totalAmount.value = await DbHelper.getTotalExpense();
     weekAmount.value = await DbHelper.getWeekExpense();
     dayAmount.value = await DbHelper.getDayExpense();
+    chartData.value = await DbHelper.getExpenseByCategory();
   }
 
   void addCategory() async {
@@ -69,6 +73,7 @@ class HomeController extends GetxController {
       loadExpenses();
       Get.back();
       categories.value = categories.where((x) => x.id != 0).toList();
+      
     }
   }
 
@@ -77,7 +82,8 @@ class HomeController extends GetxController {
       switch (screenActive.value) {
         0 => expenseBottomSheet(
             action: addExpense, categories: categories, val: categoryVal, title: titleController, amount: amountController, description: descriptionController),
-        1 => categoryBottomSheet(
+        1 => Container(),
+        2 => categoryBottomSheet(
             action: addCategory, controller: categoryNameController),
         _ => Column(
             children: [

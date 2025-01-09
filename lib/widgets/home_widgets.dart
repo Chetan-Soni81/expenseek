@@ -186,3 +186,58 @@ Widget categoryPanel(
     ],
   );
 }
+
+// Stats Panel
+
+Widget statsPanel({required BuildContext context, required HomeController c}) {
+  return Column(children: [
+    const SizedBox(height: 16),
+    const Padding(
+      padding: const EdgeInsets.all(20),
+      child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Text(
+                "Stats",
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
+              ),
+            ),
+          ]),
+    ),
+    const Text(
+      "This month spending",
+      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+    ),
+    const SizedBox(
+      height: 16,
+    ),
+    Text(
+      "₹ ${c.totalAmount.value.nFormat()}",
+      style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+    ),
+    const SizedBox(
+      height: 12,
+    ),
+    Expanded(
+        child: ListView.builder(
+          itemCount: c.chartData.length,
+          itemBuilder: (context, index) => customCard(
+            child: ListTile(
+              trailing: Text(
+                "₹ ${c.chartData.value[index].values.first.nFormat()}",
+                style:
+                    const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+              ),
+              title: Text(
+                c.chartData.value[index].keys.first,
+                style: const TextStyle(fontWeight: FontWeight.w500),
+              ),
+              //subtitle: Text(c.expenses.value[index].createdAt.dFormat()),
+            ),
+          ),
+        ),
+      )
+  ]);
+}

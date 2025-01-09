@@ -222,4 +222,25 @@ class DbHelper {
       return 0;
     }
   }
+
+  static Future<List<Map<String, double>>> getExpenseByCategory() async {
+    final db = await DbHelper.db();
+
+    try {
+      var result = await db.rawQuery(
+          "SELECT categoryName, Sum(Amount) amount FROM ${TableHelper.tblExpense} e inner join ${TableHelper.tblCategory} c on e.category=c.Id where strftime('%Y-%m', e.createdAt) = strftime('%Y-%m', 'now') GROUP BY categoryName order by amount");
+
+      List<Map<String, double>> data = <Map<String, double>>[];
+
+      for (var item in result) {
+        data.add({item["categoryName"].toString(): item["amount"] as double});
+      }
+      print(result);
+      print(data);
+      return data;
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
 }
