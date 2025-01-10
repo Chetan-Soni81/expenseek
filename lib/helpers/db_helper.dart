@@ -228,7 +228,7 @@ class DbHelper {
 
     try {
       var result = await db.rawQuery(
-          "SELECT categoryName, Sum(Amount) amount FROM ${TableHelper.tblExpense} e inner join ${TableHelper.tblCategory} c on e.category=c.Id where strftime('%Y-%m', e.createdAt) = strftime('%Y-%m', 'now') GROUP BY categoryName order by amount");
+          "SELECT categoryName, Sum(Amount) amount FROM ${TableHelper.tblExpense} e inner join ${TableHelper.tblCategory} c on e.category=c.Id where strftime('%Y-%m', e.createdAt) = strftime('%Y-%m', 'now') GROUP BY categoryName order by amount desc");
 
       List<Map<String, double>> data = <Map<String, double>>[];
 
