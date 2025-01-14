@@ -48,7 +48,7 @@ class HomeController extends GetxController {
 
   void addCategory() async {
     if (categoryNameController.text.isNotEmpty) {
-      var result = await DbHelper.insertCategory(categoryNameController.text);
+      var result = await DbHelper.insertCategory(categoryNameController.text.trim());
 
       if (result != 0) {
         categoryNameController.text = "";
@@ -64,7 +64,7 @@ class HomeController extends GetxController {
         double.parse(amountController.text) > 0 &&
         categoryVal.value != null && (categoryVal.value ?? 0) > 0) {
       var expense = ExpenseModel(
-        title: titleController.text,
+        title: titleController.text.trim(),
         amount: double.parse(amountController.text),
         description: descriptionController.text,
         category: categories.where((e) => e.id == categoryVal.value).first
