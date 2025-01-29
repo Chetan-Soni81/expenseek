@@ -2,6 +2,8 @@ import 'package:expenseek/controllers/home_controller.dart';
 import 'package:expenseek/models/category_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import 'pallete_widget.dart';
 //import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 Widget customTile(
@@ -12,7 +14,7 @@ Widget customTile(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        color: Colors.purple.shade50, 
+        color: Colors.purple.shade50,
       ),
       height: 120,
       width: width ?? tileWidth,
@@ -107,7 +109,37 @@ Widget expenseBottomSheet(
 }
 
 Widget categoryBottomSheet(
-    {required Function action, TextEditingController? controller}) {
+    {required Function action,
+    TextEditingController? controller,
+    required RxString colorName}) {
+  final colors = [
+    Colors.red,
+  Colors.blue,
+  Colors.green,
+  Colors.orange,
+  Colors.purple,
+  Colors.yellow,
+  Colors.brown,
+  Colors.cyan,
+  Colors.teal,
+  Colors.indigo,
+  Colors.pink,
+  Colors.lime,
+  Colors.deepPurple,
+  Colors.deepOrange,
+  Colors.amber,
+  Colors.lightGreen,
+  Colors.blueGrey,
+  Colors.greenAccent,
+  Colors.blueAccent,
+  Colors.redAccent,
+  Colors.orangeAccent,
+  Colors.purpleAccent,
+  Colors.cyanAccent,
+  Colors.tealAccent,
+  Colors.pinkAccent,
+  Colors.limeAccent,
+  ];
   return SingleChildScrollView(
     child: Padding(
       padding: const EdgeInsets.all(20),
@@ -128,6 +160,58 @@ Widget categoryBottomSheet(
           const SizedBox(
             height: 16,
           ),
+          Obx(
+            () => Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    palleteBox(colors[0], colorName),
+                    palleteBox(colors[1], colorName),
+                    palleteBox(colors[2], colorName),
+                    palleteBox(colors[3], colorName),
+                    palleteBox(colors[4], colorName),
+                  ],
+                ),
+                const SizedBox(height: 12,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    palleteBox(colors[5], colorName),
+                    palleteBox(colors[6], colorName),
+                    palleteBox(colors[7], colorName),
+                    palleteBox(colors[8], colorName),
+                    palleteBox(colors[9], colorName),
+                  ],
+                ),
+                const SizedBox(height: 12,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    palleteBox(colors[10], colorName),
+                    palleteBox(colors[11], colorName),
+                    palleteBox(colors[12], colorName),
+                    palleteBox(colors[13], colorName),
+                    palleteBox(colors[14], colorName),
+                  ],
+                ),
+                const SizedBox(height: 12,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    palleteBox(colors[15], colorName),
+                    palleteBox(colors[16], colorName),
+                    palleteBox(colors[17], colorName),
+                    palleteBox(colors[18], colorName),
+                    palleteBox(colors[19], colorName),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
           OutlinedButton(
             onPressed: () => action(),
             child: const Text('Save'),
@@ -138,7 +222,7 @@ Widget categoryBottomSheet(
   );
 }
 
-Widget customCard({ required Widget child }) {
+Widget customCard({required Widget child}) {
   return Card(
     elevation: 0,
     margin: const EdgeInsets.all(8),

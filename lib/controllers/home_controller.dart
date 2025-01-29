@@ -19,6 +19,7 @@ class HomeController extends GetxController {
   RxDouble weekAmount = 0.0.obs;
   RxDouble dayAmount = 0.0.obs;
   PageController pageController = PageController();
+  RxString colorName = Colors.white.value.toString().obs;
 
   @override
   void onReady() {
@@ -47,8 +48,9 @@ class HomeController extends GetxController {
   }
 
   void addCategory() async {
+    print(colorName.value);
     if (categoryNameController.text.isNotEmpty) {
-      var result = await DbHelper.insertCategory(categoryNameController.text.trim());
+      var result = await DbHelper.insertCategory(categoryNameController.text.trim(), colorName.value);
 
       if (result != 0) {
         categoryNameController.text = "";
@@ -84,7 +86,7 @@ class HomeController extends GetxController {
             action: addExpense, categories: categories, val: categoryVal, title: titleController, amount: amountController, description: descriptionController),
         1 => Container(),
         2 => categoryBottomSheet(
-            action: addCategory, controller: categoryNameController),
+            action: addCategory, controller: categoryNameController,colorName: colorName),
         _ => Column(
             children: [
               const SizedBox(height: 20),

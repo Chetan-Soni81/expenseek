@@ -1,6 +1,7 @@
 import 'package:expenseek/controllers/home_controller.dart';
 import 'package:expenseek/helpers/format_helper.dart';
 import 'package:expenseek/widgets/custom_widget.dart';
+import 'package:expenseek/widgets/pallete_widget.dart';
 import 'package:flutter/material.dart';
 
 //Home Panel
@@ -179,6 +180,7 @@ Widget categoryPanel(
                 style: const TextStyle(fontWeight: FontWeight.w500),
               ),
               subtitle: Text(c.categories.value[index].createdAt.dFormat()),
+              leading: Icon(Icons.circle,color: Color(int.parse(c.categories[index].color ?? "0")),),
             ),
           ),
         ),
@@ -221,23 +223,22 @@ Widget statsPanel({required BuildContext context, required HomeController c}) {
       height: 12,
     ),
     Expanded(
-        child: ListView.builder(
-          itemCount: c.chartData.length,
-          itemBuilder: (context, index) => customCard(
-            child: ListTile(
-              trailing: Text(
-                "₹ ${c.chartData.value[index].values.first.nFormat()}",
-                style:
-                    const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
-              ),
-              title: Text(
-                c.chartData.value[index].keys.first,
-                style: const TextStyle(fontWeight: FontWeight.w500),
-              ),
-              //subtitle: Text(c.expenses.value[index].createdAt.dFormat()),
+      child: ListView.builder(
+        itemCount: c.chartData.length,
+        itemBuilder: (context, index) => customCard(
+          child: ListTile(
+            trailing: Text(
+              "₹ ${c.chartData.value[index].values.first.nFormat()}",
+              style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
             ),
+            title: Text(
+              c.chartData.value[index].keys.first,
+              style: const TextStyle(fontWeight: FontWeight.w500),
+            ),
+            //subtitle: Text(c.expenses.value[index].createdAt.dFormat()),
           ),
         ),
-      )
+      ),
+    )
   ]);
 }

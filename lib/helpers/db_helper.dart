@@ -52,10 +52,20 @@ class DbHelper {
   }
 
   static Future<sql.Database> db() async {
-    return sql.openDatabase("expenseek_data.db", version: 2,
+    return sql.openDatabase("expenseek_data.db", version: 3,
         onCreate: (sql.Database database, int version) async {
       await createTables(database);
-    });
+    },
+     onUpgrade: (sql.Database database, int oldversion, int version) async{
+      try {
+        if (oldversion < version) {
+          await database.execute("Update ${TableHelper.tblCategory} set color = '4278190080' where color = 'FFFFFFFF'");
+        }
+      } catch (e) {
+        print('Error updating table: $e');
+      }
+     }
+    );
   }
 
   static Future<String> userExists() async {
@@ -119,13 +129,13 @@ class DbHelper {
     }
   }
 
-  static Future<int> insertCategory(String category) async {
+  static Future<int> insertCategory(String category, String color) async {
     final db = await DbHelper.db();
 
     try {
       final json = {
         "categoryName": category,
-        "color": "FFFFFFFF",
+        "color": color,
         "createdAt": DateTime.now().toString(),
       };
 
