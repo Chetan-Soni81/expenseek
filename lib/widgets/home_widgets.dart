@@ -1,7 +1,6 @@
 import 'package:expenseek/controllers/home_controller.dart';
 import 'package:expenseek/helpers/format_helper.dart';
 import 'package:expenseek/widgets/custom_widget.dart';
-import 'package:expenseek/widgets/pallete_widget.dart';
 import 'package:flutter/material.dart';
 
 //Home Panel
@@ -10,9 +9,9 @@ Widget homePanel({required BuildContext context, required HomeController c}) {
     children: [
       Column(
         children: [
-          const SizedBox(height: 16),
+          const SizedBox(height: 22),
           const Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -31,7 +30,7 @@ Widget homePanel({required BuildContext context, required HomeController c}) {
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
           ),
           const SizedBox(
-            height: 16,
+            height: 6,
           ),
           Text(
             "₹ ${c.totalAmount.value.nFormat()}",
@@ -40,29 +39,11 @@ Widget homePanel({required BuildContext context, required HomeController c}) {
         ],
       ),
       const SizedBox(
-        height: 20,
+        height: 16,
       ),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          // Container(
-          //   padding: const EdgeInsets.all(24),
-          //   decoration: BoxDecoration(
-          //     borderRadius: BorderRadius.circular(16),
-          //   color: Colors.grey[200],
-          //   ),
-          //   height: 120,
-          //   width:  tileWidth,
-          //   child: const Column(
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       Text("Day", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),),
-          //       Text("₹ 1,000.00", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
-          //      ],
-
-          //     ),
-          // ),
           customTile(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -109,21 +90,29 @@ Widget homePanel({required BuildContext context, required HomeController c}) {
       const SizedBox(
         height: 12,
       ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: minimalistDropDown(
+          selectedValue: c.filterVal.value ?? 0,
+          options: c.filterCategories,
+          actions: c.filterCatogoryAction,
+        ),
+      ),
       Expanded(
         child: ListView.builder(
-          itemCount: c.expenses.length,
+          itemCount: c.filteredExpenses.length,
           itemBuilder: (context, index) => customCard(
             child: ListTile(
               trailing: Text(
-                "₹ ${c.expenses.value[index].amount.nFormat()}",
+                "₹ ${c.filteredExpenses.value[index].amount.nFormat()}",
                 style:
                     const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
               ),
               title: Text(
-                c.expenses.value[index].title,
+                c.filteredExpenses.value[index].title,
                 style: const TextStyle(fontWeight: FontWeight.w500),
               ),
-              subtitle: Text(c.expenses.value[index].createdAt.dFormat()),
+              subtitle: Text(c.filteredExpenses.value[index].createdAt.dFormat()),
             ),
           ),
         ),
@@ -180,7 +169,10 @@ Widget categoryPanel(
                 style: const TextStyle(fontWeight: FontWeight.w500),
               ),
               subtitle: Text(c.categories.value[index].createdAt.dFormat()),
-              leading: Icon(Icons.circle,color: Color(int.parse(c.categories[index].color ?? "0")),),
+              leading: Icon(
+                Icons.circle,
+                color: Color(int.parse(c.categories[index].color ?? "0")),
+              ),
             ),
           ),
         ),

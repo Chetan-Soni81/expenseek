@@ -230,3 +230,27 @@ Widget customCard({required Widget child}) {
     child: child,
   );
 }
+
+
+Widget minimalistDropDown({ required int selectedValue, required List<CategoryModel> options, required Function actions}) {
+ return DropdownButtonHideUnderline(
+            child: DropdownButton<int>(
+              value: selectedValue,
+              icon: const Icon(Icons.keyboard_arrow_down),
+              isExpanded: true,
+              style: const TextStyle(
+                color: Colors.black87,
+                fontSize: 16,
+              ),
+              dropdownColor: Colors.white,
+              items: options.map((CategoryModel item) {
+                return DropdownMenuItem<int>(
+                  value: item.id,
+                  child: Text(item.categoryName),
+                );
+              }).toList(),
+              onChanged: (value) => actions(value)
+              ,
+            ),
+          );
+}

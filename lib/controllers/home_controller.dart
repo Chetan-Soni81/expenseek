@@ -8,13 +8,16 @@ import 'package:get/get.dart';
 class HomeController extends GetxController {
   RxInt screenActive = 0.obs;
   RxList<CategoryModel> categories = <CategoryModel>[].obs;
+  RxList<CategoryModel> filterCategories = <CategoryModel>[].obs;
   RxList<ExpenseModel> expenses = <ExpenseModel>[].obs;
+  RxList<ExpenseModel> filteredExpenses = <ExpenseModel>[].obs;
   RxList<Map<String, double>> chartData = <Map<String, double>>[].obs;
   TextEditingController categoryNameController = TextEditingController();
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController amountController = TextEditingController();
   Rx<int?> categoryVal = 0.obs;
+  Rx<int?> filterVal = 0.obs;
   RxDouble totalAmount = 0.0.obs;
   RxDouble weekAmount = 0.0.obs;
   RxDouble dayAmount = 0.0.obs;
@@ -32,25 +35,28 @@ class HomeController extends GetxController {
     var result = await DbHelper.getAllCategories();
 
     categories.value = result;
-    
-    chartData.value = await DbHelper.getExpenseByCategory();
+    filterCategories.value = result;
+    filterCategories.add(CategoryModel(id: 0, name: "All"));
+    chartData.value = await DbHelper.getExpenseByCategory(filterVal.value ?? 0);
   }
 
   void loadExpenses() async {
     var result = await DbHelper.getAllExpense();
 
     expenses.value = result;
+    filteredExpenses.value = result;
 
     totalAmount.value = await DbHelper.getTotalExpense();
     weekAmount.value = await DbHelper.getWeekExpense();
     dayAmount.value = await DbHelper.getDayExpense();
-    chartData.value = await DbHelper.getExpenseByCategory();
+    chartData.value = await DbHelper.getExpenseByCategory(filterVal.value ?? 0);
   }
 
   void addCategory() async {
     print(colorName.value);
     if (categoryNameController.text.isNotEmpty) {
-      var result = await DbHelper.insertCategory(categoryNameController.text.trim(), colorName.value);
+      var result = await DbHelper.insertCategory(
+          categoryNameController.text.trim(), colorName.value);
 
       if (result != 0) {
         categoryNameController.text = "";
@@ -64,18 +70,17 @@ class HomeController extends GetxController {
     if (titleController.text.isNotEmpty &&
         amountController.text.isNotEmpty &&
         double.parse(amountController.text) > 0 &&
-        categoryVal.value != null && (categoryVal.value ?? 0) > 0) {
+        categoryVal.value != null &&
+        (categoryVal.value ?? 0) > 0) {
       var expense = ExpenseModel(
-        title: titleController.text.trim(),
-        amount: double.parse(amountController.text),
-        description: descriptionController.text,
-        category: categories.where((e) => e.id == categoryVal.value).first
-      );
+          title: titleController.text.trim(),
+          amount: double.parse(amountController.text),
+          description: descriptionController.text,
+          category: categories.where((e) => e.id == categoryVal.value).first);
       var result = await DbHelper.insertExpense(expense);
       loadExpenses();
       Get.back();
       categories.value = categories.where((x) => x.id != 0).toList();
-      
     }
   }
 
@@ -83,10 +88,17 @@ class HomeController extends GetxController {
     Get.bottomSheet(
       switch (screenActive.value) {
         0 => expenseBottomSheet(
-            action: addExpense, categories: categories, val: categoryVal, title: titleController, amount: amountController, description: descriptionController),
+            action: addExpense,
+            categories: categories,
+            val: categoryVal,
+            title: titleController,
+            amount: amountController,
+            description: descriptionController),
         1 => Container(),
         2 => categoryBottomSheet(
-            action: addCategory, controller: categoryNameController,colorName: colorName),
+            action: addCategory,
+            controller: categoryNameController,
+            colorName: colorName),
         _ => Column(
             children: [
               const SizedBox(height: 20),
@@ -112,5 +124,14 @@ class HomeController extends GetxController {
             topLeft: Radius.circular(10), topRight: Radius.circular(10)),
       ),
     );
+  }
+
+  void filterCatogoryAction(int filter) {
+    filterVal.value = filter;
+    if(filterVal.value != null && filterVal.value != 0) {
+      filteredExpenses.value = expenses.value.where((e) => e.category?.id == filter).toList();
+    } else  {
+      filteredExpenses.value = expenses.value;
+    }
   }
 }

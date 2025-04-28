@@ -233,7 +233,7 @@ class DbHelper {
     }
   }
 
-  static Future<List<Map<String, double>>> getExpenseByCategory() async {
+  static Future<List<Map<String, double>>> getExpenseByCategory(int category) async {
     final db = await DbHelper.db();
 
     try {
