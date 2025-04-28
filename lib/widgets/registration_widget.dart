@@ -1,3 +1,4 @@
+import 'package:expenseek/helpers/theme_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 
@@ -32,6 +33,10 @@ Widget registrationWidget(
       Pinput(
         obscureText: true,
         length: 6,
+        defaultPinTheme: ThemeHelper.defaultPinTheme,
+        focusedPinTheme: ThemeHelper.focusedPinTheme,
+        submittedPinTheme: ThemeHelper.submittedPinTheme,
+        errorPinTheme: ThemeHelper.errorPinTheme,
         controller: pinController,
       ),
       const SizedBox(

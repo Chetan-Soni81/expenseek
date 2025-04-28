@@ -17,9 +17,10 @@ class HomeScreen extends StatelessWidget {
       //   ],
       //   elevation: 0,
       // ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: Obx(() => c.screenActive.value != 1 ? FloatingActionButton(
         onPressed: () => c.doClick(),
         child: const Icon(Icons.add),
+      ) : const SizedBox.shrink(),
       ),
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
