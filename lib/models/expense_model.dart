@@ -29,6 +29,7 @@ class ExpenseModel {
     _amount = json["amount"];
     _description = json["description"];
     _createdAt = DateTime.parse(json["createdAt"]);
+    _category = CategoryModel.fromJson({"id" : json["category"], "categoryName": json["categoryName"], "color": json["color"], "createdAt": json["categoryCreated"]});
   }
 
   Map<String, dynamic> toInsert() {

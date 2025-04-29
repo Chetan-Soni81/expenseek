@@ -97,7 +97,7 @@ class DbHelper {
     return "";
   }
 
-   static Future<String?> getUserById(int user) async {
+  static Future<String?> getUserById(int user) async {
     final db = await DbHelper.db();
 
     final List<Map<String, dynamic>> results = await db.query(
@@ -114,7 +114,6 @@ class DbHelper {
 
     return "";
   }
-
 
   static Future<int> registerUser(UserModel user) async {
     final db = await DbHelper.db();
@@ -182,8 +181,11 @@ class DbHelper {
     final db = await DbHelper.db();
 
     try {
+      var query = "select e.id, e.amount, e.title, e.amount, e.description, e.createdAt, e.category, c.categoryName, c.color, c.createdAt as categoryCreated from ${TableHelper.tblExpense} as e join ${TableHelper.tblCategory} as c on e.category=c.id order by e.createdAt";
+
       var result =
-          await db.query(TableHelper.tblExpense, orderBy: "createdAt DESC");
+          // await db.query(TableHelper.tblExpense, orderBy: "createdAt DESC");
+          await db.rawQuery(query);
 
       final expenses = result.map((e) => ExpenseModel.fromJson(e)).toList();
 
