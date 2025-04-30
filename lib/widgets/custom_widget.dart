@@ -1,4 +1,3 @@
-import 'package:expenseek/controllers/home_controller.dart';
 import 'package:expenseek/models/category_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -47,6 +46,7 @@ Widget expenseBottomSheet(
           const SizedBox(height: 20),
           TextField(
             controller: title,
+            textCapitalization: TextCapitalization.sentences,
             decoration: const InputDecoration(
               labelText: "Title",
               border: OutlineInputBorder(),

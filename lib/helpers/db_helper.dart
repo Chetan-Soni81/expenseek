@@ -181,7 +181,7 @@ class DbHelper {
     final db = await DbHelper.db();
 
     try {
-      var query = "select e.id, e.amount, e.title, e.amount, e.description, e.createdAt, e.category, c.categoryName, c.color, c.createdAt as categoryCreated from ${TableHelper.tblExpense} as e join ${TableHelper.tblCategory} as c on e.category=c.id order by e.createdAt";
+      var query = "select e.id, e.amount, e.title, e.amount, e.description, e.createdAt, e.category, c.categoryName, c.color, c.createdAt as categoryCreated from ${TableHelper.tblExpense} as e join ${TableHelper.tblCategory} as c on e.category=c.id order by e.createdAt desc";
 
       var result =
           // await db.query(TableHelper.tblExpense, orderBy: "createdAt DESC");
