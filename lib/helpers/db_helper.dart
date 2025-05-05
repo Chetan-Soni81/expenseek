@@ -147,6 +147,21 @@ class DbHelper {
     }
   }
 
+  static Future<int> updateCategory(CategoryModel category) async {
+    final db = await DbHelper.db();
+
+    try {
+     final json = category.toJson();
+
+     final id = db.update(TableHelper.tblCategory, json, conflictAlgorithm: sql.ConflictAlgorithm.replace);
+
+     return id;
+    } catch(e) {
+      print(e.toString());
+      return 0;
+    }
+  }
+
   static Future<List<CategoryModel>> getAllCategories() async {
     final db = await DbHelper.db();
 

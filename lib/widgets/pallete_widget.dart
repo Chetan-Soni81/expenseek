@@ -8,7 +8,7 @@ Widget palleteBox(Color c, RxString colorName) {
     width: 40,
     child: Radio(
       fillColor: WidgetStateProperty.resolveWith((Set<WidgetState> states) {
-        if(states.contains(WidgetState.selected)) {
+        if(c.value.toString() == colorName.value) {
           return Colors.white;
         } else {
           return c;

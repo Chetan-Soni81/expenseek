@@ -46,3 +46,34 @@ class ThemeColors {
   static final lightPurple = Colors.deepPurple[100]!;
   static final darkPurple = Colors.deepPurple[500]!;
 }
+
+class PalletHelper{
+  static final colors = [
+    Colors.red,
+  Colors.blue,
+  Colors.green,
+  Colors.orange,
+  Colors.purple,
+  Colors.yellow,
+  Colors.brown,
+  Colors.cyan,
+  Colors.teal,
+  Colors.indigo,
+  Colors.pink,
+  Colors.lime,
+  Colors.deepPurple,
+  Colors.deepOrange,
+  Colors.amber,
+  Colors.lightGreen,
+  Colors.blueGrey,
+  Colors.greenAccent,
+  Colors.blueAccent,
+  Colors.redAccent,
+  Colors.orangeAccent,
+  Colors.purpleAccent,
+  Colors.cyanAccent,
+  Colors.tealAccent,
+  Colors.pinkAccent,
+  Colors.limeAccent,
+  ];
+}

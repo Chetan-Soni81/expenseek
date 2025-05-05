@@ -1,3 +1,5 @@
+import 'package:expenseek/helpers/format_helper.dart';
+
 class CategoryModel {
   int? _id;
   String _categoryName = "";
@@ -16,8 +18,8 @@ class CategoryModel {
     _createdAt = DateTime.parse(json["createdAt"]);
   }
 
-  CategoryModel({required int id, required String name}){
-    _id = id; _categoryName = name;
+  CategoryModel({required int id, required String name, String? color}){
+    _id = id; _categoryName = name; _color= color;
   }
 
    Map<String, dynamic> toJson(){
@@ -25,7 +27,7 @@ class CategoryModel {
       "id":id,
       "categoryName": categoryName,
       "color": color,
-      "createdAt": createdAt,
+      "createdAt": createdAt.sqlFormat(),
     };
    }
 }

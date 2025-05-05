@@ -11,6 +11,9 @@ extension DateTimeFormatting on DateTime
   String dFormat() { 
     return DateFormat('dd-MMM-yyyy hh:mm:ss a').format(this); // Placeholder, replace with your custom formatting logic 
   } 
+  String sqlFormat() {
+    return DateFormat('yyyy-MM-dd HH:mm:ss').format(this);
+  }
 }
 
 extension NumberFormatting on double {

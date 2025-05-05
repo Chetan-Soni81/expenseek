@@ -1,3 +1,4 @@
+import 'package:expenseek/helpers/theme_helper.dart';
 import 'package:expenseek/models/category_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -112,34 +113,10 @@ Widget categoryBottomSheet(
     {required Function action,
     TextEditingController? controller,
     required RxString colorName}) {
-  final colors = [
-    Colors.red,
-  Colors.blue,
-  Colors.green,
-  Colors.orange,
-  Colors.purple,
-  Colors.yellow,
-  Colors.brown,
-  Colors.cyan,
-  Colors.teal,
-  Colors.indigo,
-  Colors.pink,
-  Colors.lime,
-  Colors.deepPurple,
-  Colors.deepOrange,
-  Colors.amber,
-  Colors.lightGreen,
-  Colors.blueGrey,
-  Colors.greenAccent,
-  Colors.blueAccent,
-  Colors.redAccent,
-  Colors.orangeAccent,
-  Colors.purpleAccent,
-  Colors.cyanAccent,
-  Colors.tealAccent,
-  Colors.pinkAccent,
-  Colors.limeAccent,
-  ];
+  final colors = PalletHelper.colors;
+
+controller!.text = "";
+  colorName.value = "";
   return SingleChildScrollView(
     child: Padding(
       padding: const EdgeInsets.all(20),

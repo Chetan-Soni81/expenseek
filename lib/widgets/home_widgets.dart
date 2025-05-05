@@ -173,6 +173,7 @@ Widget categoryPanel(
                 Icons.circle,
                 color: Color(int.parse(c.categories[index].color ?? "0")),
               ),
+              onTap: () => c.showCategoryDialog(c.categories[index].id ?? 0),
             ),
           ),
         ),

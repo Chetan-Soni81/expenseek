@@ -2,8 +2,11 @@ import 'package:expenseek/helpers/db_helper.dart';
 import 'package:expenseek/models/category_model.dart';
 import 'package:expenseek/models/expense_model.dart';
 import 'package:expenseek/widgets/custom_widget.dart';
+import 'package:expenseek/widgets/pallete_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../helpers/theme_helper.dart';
 
 class HomeController extends GetxController {
   RxInt screenActive = 0.obs;
@@ -89,7 +92,7 @@ class HomeController extends GetxController {
       switch (screenActive.value) {
         0 => expenseBottomSheet(
             action: addExpense,
-            categories: categories,
+            categories: categories.where((e) => e.id != 0).toList(),
             val: categoryVal,
             title: titleController,
             amount: amountController,
@@ -128,10 +131,174 @@ class HomeController extends GetxController {
 
   void filterCatogoryAction(int filter) {
     filterVal.value = filter;
-    if(filterVal.value != null && filterVal.value != 0) {
-      filteredExpenses.value = expenses.value.where((e) => e.category?.id == filter).toList();
-    } else  {
+    if (filterVal.value != null && filterVal.value != 0) {
+      filteredExpenses.value =
+          expenses.value.where((e) => e.category?.id == filter).toList();
+    } else {
       filteredExpenses.value = expenses.value;
     }
+  }
+
+  void showCategoryDialog(int id) {
+    CategoryModel? category = categories.where((e) => e.id == id).firstOrNull;
+
+    if (category == null) return;
+
+    categoryNameController.text = category.categoryName;
+    colorName.value = category.color ?? "";
+
+    Get.dialog(
+      Dialog(
+        child: Container(
+          height: 420,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Edit Category',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              TextField(
+                decoration: InputDecoration(
+                  fillColor: Colors.white,
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: BorderSide(
+                      color: Colors.deepPurple[600]!,
+                      width: 1.0,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: BorderSide(
+                      color: Colors.deepPurple[600]!,
+                      width: 1.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: BorderSide(
+                      color: Colors.deepPurple[700]!,
+                      width: 2.0,
+                    ),
+                  ),
+                ),
+                controller: categoryNameController,
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              Obx(
+                () => Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        palleteBox(PalletHelper.colors[0], colorName),
+                        palleteBox(PalletHelper.colors[2], colorName),
+                        palleteBox(PalletHelper.colors[1], colorName),
+                        palleteBox(PalletHelper.colors[3], colorName),
+                        palleteBox(PalletHelper.colors[4], colorName),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        palleteBox(PalletHelper.colors[5], colorName),
+                        palleteBox(PalletHelper.colors[6], colorName),
+                        palleteBox(PalletHelper.colors[7], colorName),
+                        palleteBox(PalletHelper.colors[8], colorName),
+                        palleteBox(PalletHelper.colors[9], colorName),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        palleteBox(PalletHelper.colors[10], colorName),
+                        palleteBox(PalletHelper.colors[11], colorName),
+                        palleteBox(PalletHelper.colors[12], colorName),
+                        palleteBox(PalletHelper.colors[13], colorName),
+                        palleteBox(PalletHelper.colors[14], colorName),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        palleteBox(PalletHelper.colors[15], colorName),
+                        palleteBox(PalletHelper.colors[16], colorName),
+                        palleteBox(PalletHelper.colors[17], colorName),
+                        palleteBox(PalletHelper.colors[18], colorName),
+                        palleteBox(PalletHelper.colors[19], colorName),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey[300]),
+                      onPressed: () => Get.back(),
+                      child: const Text("Close")),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.purple,
+                        foregroundColor: Colors.white,
+                      ),
+                      onPressed: () => updateCategory(id),
+                      child: const Text("Save")),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    //
+    // colorName. value = category.color ?? "";
+
+    // Get.bottomSheet(categoryBottomSheet(
+    //         action: addCategory,
+    //         controller: categoryNameController,
+    //         colorName: colorName));
+  }
+
+  void updateCategory(int id) async {
+    var category = CategoryModel(
+        id: id, name: categoryNameController.text, color: colorName.value);
+
+    var i = await DbHelper.updateCategory(category);
+
+    if (i > 0) Get.back();
+
+    Get.showSnackbar(GetSnackBar(
+      title: i == 0 ? "Failed" : " Success",
+      message: (i == 0 ? "Category update failed" : "Category Update success"),
+      backgroundColor: (i == 0 ? Colors.red : Colors.green),
+      duration: const Duration(seconds: 2),
+      animationDuration: const Duration(seconds: 1),
+    ));
+    
+    loadCategories();
   }
 }
