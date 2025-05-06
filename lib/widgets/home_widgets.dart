@@ -113,6 +113,7 @@ Widget homePanel({required BuildContext context, required HomeController c}) {
                 style: const TextStyle(fontWeight: FontWeight.w500),
               ),
               subtitle: Text(c.filteredExpenses.value[index].createdAt.dFormat()),
+              onTap: () => c.showExpenseDialog(c.filteredExpenses.value[index].id ?? 0),
             ),
           ),
         ),

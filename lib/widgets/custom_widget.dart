@@ -187,8 +187,7 @@ Widget minimalistDropDown(
   );
 }
 
-Widget customTextField(
-    {required TextEditingController categoryNameController}) {
+Widget customTextField({required TextEditingController textController}) {
   return TextField(
     decoration: InputDecoration(
       fillColor: Colors.white,
@@ -215,7 +214,42 @@ Widget customTextField(
         ),
       ),
     ),
-    controller: categoryNameController,
+    controller: textController,
+  );
+}
+
+Widget customTextArea(
+    {required TextEditingController textController,
+    required int maxCharactes}) {
+  return TextField(
+    decoration: InputDecoration(
+      fillColor: Colors.white,
+      filled: true,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12.0),
+        borderSide: BorderSide(
+          color: Colors.deepPurple[600]!,
+          width: 1.0,
+        ),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12.0),
+        borderSide: BorderSide(
+          color: Colors.deepPurple[600]!,
+          width: 1.0,
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12.0),
+        borderSide: BorderSide(
+          color: Colors.deepPurple[700]!,
+          width: 2.0,
+        ),
+      ),
+    ),
+    controller: textController,
+    keyboardType: TextInputType.multiline,
+    maxLength: maxCharactes,
   );
 }
 

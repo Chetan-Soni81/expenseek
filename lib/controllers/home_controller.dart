@@ -6,8 +6,6 @@ import 'package:expenseek/widgets/pallete_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../helpers/theme_helper.dart';
-
 class HomeController extends GetxController {
   RxInt screenActive = 0.obs;
   RxList<CategoryModel> categories = <CategoryModel>[].obs;
@@ -26,6 +24,7 @@ class HomeController extends GetxController {
   RxDouble dayAmount = 0.0.obs;
   PageController pageController = PageController();
   RxString colorName = Colors.white.value.toString().obs;
+  RxBool isEdit = false.obs;
 
   @override
   void onReady() {
@@ -163,7 +162,7 @@ class HomeController extends GetxController {
               const SizedBox(
                 height: 16,
               ),
-              customTextField(categoryNameController: categoryNameController),
+              customTextField(textController: categoryNameController),
               const SizedBox(
                 height: 16,
               ),
@@ -181,13 +180,6 @@ class HomeController extends GetxController {
                           backgroundColor: Colors.grey[300]),
                       onPressed: () => Get.back(),
                       child: const Text("Close")),
-                  // ElevatedButton(
-                  //     style: ElevatedButton.styleFrom(
-                  //       backgroundColor: Colors.purple,
-                  //       foregroundColor: Colors.white,
-                  //     ),
-                  //     onPressed: () => updateCategory(id),
-                  //     child: const Text("Save")),
                       purpleButton(text: "Save", action: () => updateCategory(id)),
                 ],
               ),
@@ -196,13 +188,6 @@ class HomeController extends GetxController {
         ),
       ),
     );
-    //
-    // colorName. value = category.color ?? "";
-
-    // Get.bottomSheet(categoryBottomSheet(
-    //         action: addCategory,
-    //         controller: categoryNameController,
-    //         colorName: colorName));
   }
 
   void updateCategory(int id) async {
@@ -223,4 +208,79 @@ class HomeController extends GetxController {
     
     loadCategories();
   }
+
+void showExpenseDialog(int id) {
+    ExpenseModel? expense = expenses.where((e) => e.id == id).firstOrNull;
+
+    if (expense == null) return;
+
+    amountController.text = expense.amount.toString();
+    descriptionController.text = expense.description;
+    categoryVal.value = categories.any((e) => e.id == expense.category!.id) ? expense.category!.id : 0;
+
+  var showCategories = categories.where((e) => e.id != 0).toList();
+  
+  showCategories.add(CategoryModel(id: 0, name: "Select a Category"));
+
+    Get.dialog(
+      Dialog(
+        child: Container(
+          height: 420,
+          width: Get.mediaQuery.size.width,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Expense',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              customTextField(textController: categoryNameController),
+              const SizedBox(
+                height: 16,
+              ),
+               DropdownButton(
+              isExpanded: true,
+              padding: const EdgeInsets.all(8),
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              elevation: 0,
+              value: categoryVal.value,
+              items: showCategories
+                  .map((e) => DropdownMenuItem(
+                        value: e.id,
+                        child: Text(e.categoryName),
+                      ))
+                  .toList(),
+              onChanged: (value) {
+                categoryVal.value = value;
+              },
+              hint: const Text("Select a Category"),
+              menuWidth: Get.mediaQuery.size.width - 40,
+            ),
+          
+              const SizedBox(
+                height: 16,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey[300]),
+                      onPressed: () => Get.back(),
+                      child: const Text("Close")),
+                      purpleButton(text: "Save", action: () => updateCategory(id)),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
 }
