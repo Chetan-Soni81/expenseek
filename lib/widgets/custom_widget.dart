@@ -115,7 +115,7 @@ Widget categoryBottomSheet(
     required RxString colorName}) {
   final colors = PalletHelper.colors;
 
-controller!.text = "";
+  controller!.text = "";
   colorName.value = "";
   return SingleChildScrollView(
     child: Padding(
@@ -138,53 +138,7 @@ controller!.text = "";
             height: 16,
           ),
           Obx(
-            () => Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    palleteBox(colors[0], colorName),
-                    palleteBox(colors[1], colorName),
-                    palleteBox(colors[2], colorName),
-                    palleteBox(colors[3], colorName),
-                    palleteBox(colors[4], colorName),
-                  ],
-                ),
-                const SizedBox(height: 12,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    palleteBox(colors[5], colorName),
-                    palleteBox(colors[6], colorName),
-                    palleteBox(colors[7], colorName),
-                    palleteBox(colors[8], colorName),
-                    palleteBox(colors[9], colorName),
-                  ],
-                ),
-                const SizedBox(height: 12,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    palleteBox(colors[10], colorName),
-                    palleteBox(colors[11], colorName),
-                    palleteBox(colors[12], colorName),
-                    palleteBox(colors[13], colorName),
-                    palleteBox(colors[14], colorName),
-                  ],
-                ),
-                const SizedBox(height: 12,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    palleteBox(colors[15], colorName),
-                    palleteBox(colors[16], colorName),
-                    palleteBox(colors[17], colorName),
-                    palleteBox(colors[18], colorName),
-                    palleteBox(colors[19], colorName),
-                  ],
-                ),
-              ],
-            ),
+            () => palleteWidget(colorName: colorName),
           ),
           const SizedBox(
             height: 16,
@@ -208,26 +162,69 @@ Widget customCard({required Widget child}) {
   );
 }
 
+Widget minimalistDropDown(
+    {required int selectedValue,
+    required List<CategoryModel> options,
+    required Function actions}) {
+  return DropdownButtonHideUnderline(
+    child: DropdownButton<int>(
+      value: selectedValue,
+      icon: const Icon(Icons.keyboard_arrow_down),
+      isExpanded: true,
+      style: const TextStyle(
+        color: Colors.black87,
+        fontSize: 16,
+      ),
+      dropdownColor: Colors.white,
+      items: options.map((CategoryModel item) {
+        return DropdownMenuItem<int>(
+          value: item.id,
+          child: Text(item.categoryName),
+        );
+      }).toList(),
+      onChanged: (value) => actions(value),
+    ),
+  );
+}
 
-Widget minimalistDropDown({ required int selectedValue, required List<CategoryModel> options, required Function actions}) {
- return DropdownButtonHideUnderline(
-            child: DropdownButton<int>(
-              value: selectedValue,
-              icon: const Icon(Icons.keyboard_arrow_down),
-              isExpanded: true,
-              style: const TextStyle(
-                color: Colors.black87,
-                fontSize: 16,
-              ),
-              dropdownColor: Colors.white,
-              items: options.map((CategoryModel item) {
-                return DropdownMenuItem<int>(
-                  value: item.id,
-                  child: Text(item.categoryName),
-                );
-              }).toList(),
-              onChanged: (value) => actions(value)
-              ,
-            ),
-          );
+Widget customTextField(
+    {required TextEditingController categoryNameController}) {
+  return TextField(
+    decoration: InputDecoration(
+      fillColor: Colors.white,
+      filled: true,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12.0),
+        borderSide: BorderSide(
+          color: Colors.deepPurple[600]!,
+          width: 1.0,
+        ),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12.0),
+        borderSide: BorderSide(
+          color: Colors.deepPurple[600]!,
+          width: 1.0,
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12.0),
+        borderSide: BorderSide(
+          color: Colors.deepPurple[700]!,
+          width: 2.0,
+        ),
+      ),
+    ),
+    controller: categoryNameController,
+  );
+}
+
+Widget purpleButton({required String text, required Function action}) {
+  return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.purple,
+        foregroundColor: Colors.white,
+      ),
+      onPressed: () => action(),
+      child: Text(text));
 }

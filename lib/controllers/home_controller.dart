@@ -163,91 +163,12 @@ class HomeController extends GetxController {
               const SizedBox(
                 height: 16,
               ),
-              TextField(
-                decoration: InputDecoration(
-                  fillColor: Colors.white,
-                  filled: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.0),
-                    borderSide: BorderSide(
-                      color: Colors.deepPurple[600]!,
-                      width: 1.0,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.0),
-                    borderSide: BorderSide(
-                      color: Colors.deepPurple[600]!,
-                      width: 1.0,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.0),
-                    borderSide: BorderSide(
-                      color: Colors.deepPurple[700]!,
-                      width: 2.0,
-                    ),
-                  ),
-                ),
-                controller: categoryNameController,
-              ),
+              customTextField(categoryNameController: categoryNameController),
               const SizedBox(
                 height: 16,
               ),
               Obx(
-                () => Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        palleteBox(PalletHelper.colors[0], colorName),
-                        palleteBox(PalletHelper.colors[2], colorName),
-                        palleteBox(PalletHelper.colors[1], colorName),
-                        palleteBox(PalletHelper.colors[3], colorName),
-                        palleteBox(PalletHelper.colors[4], colorName),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        palleteBox(PalletHelper.colors[5], colorName),
-                        palleteBox(PalletHelper.colors[6], colorName),
-                        palleteBox(PalletHelper.colors[7], colorName),
-                        palleteBox(PalletHelper.colors[8], colorName),
-                        palleteBox(PalletHelper.colors[9], colorName),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        palleteBox(PalletHelper.colors[10], colorName),
-                        palleteBox(PalletHelper.colors[11], colorName),
-                        palleteBox(PalletHelper.colors[12], colorName),
-                        palleteBox(PalletHelper.colors[13], colorName),
-                        palleteBox(PalletHelper.colors[14], colorName),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        palleteBox(PalletHelper.colors[15], colorName),
-                        palleteBox(PalletHelper.colors[16], colorName),
-                        palleteBox(PalletHelper.colors[17], colorName),
-                        palleteBox(PalletHelper.colors[18], colorName),
-                        palleteBox(PalletHelper.colors[19], colorName),
-                      ],
-                    ),
-                  ],
-                ),
+                () => palleteWidget(colorName: colorName),
               ),
               const SizedBox(
                 height: 16,
@@ -260,13 +181,14 @@ class HomeController extends GetxController {
                           backgroundColor: Colors.grey[300]),
                       onPressed: () => Get.back(),
                       child: const Text("Close")),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.purple,
-                        foregroundColor: Colors.white,
-                      ),
-                      onPressed: () => updateCategory(id),
-                      child: const Text("Save")),
+                  // ElevatedButton(
+                  //     style: ElevatedButton.styleFrom(
+                  //       backgroundColor: Colors.purple,
+                  //       foregroundColor: Colors.white,
+                  //     ),
+                  //     onPressed: () => updateCategory(id),
+                  //     child: const Text("Save")),
+                      purpleButton(text: "Save", action: () => updateCategory(id)),
                 ],
               ),
             ],
