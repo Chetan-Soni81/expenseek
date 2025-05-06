@@ -38,7 +38,7 @@ class HomeController extends GetxController {
     var result = await DbHelper.getAllCategories();
 
     categories.value = result;
-    filterCategories.value = result;
+    filterCategories.value = result.toList();
     filterCategories.add(CategoryModel(id: 0, name: "All"));
     chartData.value = await DbHelper.getExpenseByCategory(filterVal.value ?? 0);
   }

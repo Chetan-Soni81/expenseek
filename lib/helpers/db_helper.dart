@@ -1,4 +1,5 @@
 import 'package:expenseek/helpers/db_types.dart';
+import 'package:expenseek/helpers/format_helper.dart';
 import 'package:expenseek/helpers/table_helper.dart';
 import 'package:expenseek/models/category_model.dart';
 import 'package:expenseek/models/expense_model.dart';
@@ -151,9 +152,11 @@ class DbHelper {
     final db = await DbHelper.db();
 
     try {
-     final json = category.toJson();
+    //  final json = category.toJson();
 
-     final id = db.update(TableHelper.tblCategory, json, conflictAlgorithm: sql.ConflictAlgorithm.replace);
+    final query = "Update ${TableHelper.tblCategory} set categoryName='${category.categoryName}', color='${category.color}' where id=${category.id}";
+
+     final id = db.rawUpdate(query);
 
      return id;
     } catch(e) {
@@ -196,7 +199,7 @@ class DbHelper {
     final db = await DbHelper.db();
 
     try {
-      var query = "select e.id, e.amount, e.title, e.amount, e.description, e.createdAt, e.category, c.categoryName, c.color, c.createdAt as categoryCreated from ${TableHelper.tblExpense} as e join ${TableHelper.tblCategory} as c on e.category=c.id order by e.createdAt desc";
+      var query = "select e.id, e.amount, e.title, e.amount, e.description, e.createdAt, e.category, ifnull(c.categoryName,'') as categoryName, ifnull(c.color,'') as color, ifnull(c.createdAt,date('now')) as categoryCreated from ${TableHelper.tblExpense} as e left join ${TableHelper.tblCategory} as c on e.category=c.id order by e.createdAt desc";
 
       var result =
           // await db.query(TableHelper.tblExpense, orderBy: "createdAt DESC");
