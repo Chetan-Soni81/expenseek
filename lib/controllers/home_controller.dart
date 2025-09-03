@@ -1,7 +1,7 @@
-import 'package:expenseek/helpers/db_helper.dart';
 import 'package:expenseek/models/category_model.dart';
 import 'package:expenseek/models/expense_model.dart';
 import 'package:expenseek/repositories/category_repository.dart';
+import 'package:expenseek/repositories/expense_repository.dart';
 import 'package:expenseek/widgets/custom_widget.dart';
 import 'package:expenseek/widgets/pallete_widget.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 
 class HomeController extends GetxController {
   late CategoryRepository categoryRepository;
+  late ExpenseRepository expenseRepository;
   RxInt screenActive = 0.obs;
   RxList<CategoryModel> categories = <CategoryModel>[].obs;
   RxList<CategoryModel> filterCategories = <CategoryModel>[].obs;
@@ -32,6 +33,7 @@ class HomeController extends GetxController {
   void onReady() {
     super.onReady();
     categoryRepository = CategoryRepository();
+    expenseRepository = ExpenseRepository();
     loadExpenses();
     loadCategories();
   }
@@ -42,19 +44,19 @@ class HomeController extends GetxController {
     categories.value = result;
     filterCategories.value = result.toList();
     filterCategories.add(CategoryModel(id: 0, name: "All"));
-    chartData.value = await DbHelper.getExpenseByCategory(filterVal.value ?? 0);
+    chartData.value = await expenseRepository.getExpenseByCategory(filterVal.value ?? 0);
   }
 
   void loadExpenses() async {
-    var result = await DbHelper.getAllExpense();
+    var result = await expenseRepository.getAllExpense();
 
     expenses.value = result;
     filteredExpenses.value = result;
 
-    totalAmount.value = await DbHelper.getTotalExpense();
-    weekAmount.value = await DbHelper.getWeekExpense();
-    dayAmount.value = await DbHelper.getDayExpense();
-    chartData.value = await DbHelper.getExpenseByCategory(filterVal.value ?? 0);
+    totalAmount.value = await expenseRepository.getTotalExpense();
+    weekAmount.value = await expenseRepository.getWeekExpense();
+    dayAmount.value = await expenseRepository.getDayExpense();
+    chartData.value = await expenseRepository.getExpenseByCategory(filterVal.value ?? 0);
   }
 
   void addCategory() async {
@@ -82,7 +84,7 @@ class HomeController extends GetxController {
           amount: double.parse(amountController.text),
           description: descriptionController.text,
           category: categories.where((e) => e.id == categoryVal.value).first);
-      var result = await DbHelper.insertExpense(expense);
+      var result = await expenseRepository.insertExpense(expense);
       loadExpenses();
       Get.back();
       categories.value = categories.where((x) => x.id != 0).toList();
@@ -197,7 +199,7 @@ class HomeController extends GetxController {
     var category = CategoryModel(
         id: id, name: categoryNameController.text, color: colorName.value);
 
-    var i = await DbHelper.updateCategory(category);
+    var i = await categoryRepository.updateCategory(category);
 
     if (i > 0) Get.back();
 

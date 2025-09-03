@@ -117,6 +117,20 @@ class DbHelperV2 {
     }
   }
 
+  Future<List<Map<String, Object?>>> queryResults({required String sqlQuery, List<Object?>? args}) async {
+    try {
+    var db = await _database;
+
+    var results = await db.rawQuery(sqlQuery, args);
+
+    return results;
+    }
+    catch (e) {
+      print(e);
+      return <Map<String, Object?>>[];
+    }
+  }
+
   Future<int> insertRecord(String tableName, Map<String, dynamic> data, sql.ConflictAlgorithm algorithm) async {
     try 
     {
