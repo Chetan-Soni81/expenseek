@@ -35,7 +35,7 @@ class UserRepository extends BaseRepository {
 
  Future<String?> loginUser(UserModel user) async {
   try {
-    var result = dbHelper.queryValue<String?>('select username from ${TableHelper.tblUser} where username = ? and pin = ?', [user.username, user.pin]);
+    var result = dbHelper.queryValue<String?>(sqlQuery: 'select username from ${TableHelper.tblUser} where username = ? and pin = ?', args: [user.username, user.pin]);
     return result;
   } catch(e) {
     print(e);

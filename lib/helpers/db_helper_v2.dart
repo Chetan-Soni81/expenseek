@@ -71,12 +71,12 @@ class DbHelperV2 {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getAllData() async {
+  Future<List<Map<String, dynamic>>> getAllData(String tableName) async {
     try 
     {
       var db = await _database;
      final List<Map<String, dynamic>> results =
-          await db.query(TableHelper.tblCategory, orderBy: "createdAt");
+          await db.query(tableName, orderBy: "createdAt");
 
       return results;
     }
@@ -103,7 +103,7 @@ class DbHelperV2 {
     }
   }
 
-  Future<T> queryValue<T>(String sqlQuery, List<Object?>? args) async {
+  Future<T> queryValue<T>({required String sqlQuery, List<Object?>? args}) async {
     try {
     var db = await _database;
 

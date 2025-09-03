@@ -1,12 +1,14 @@
 import 'package:expenseek/helpers/db_helper.dart';
 import 'package:expenseek/models/category_model.dart';
 import 'package:expenseek/models/expense_model.dart';
+import 'package:expenseek/repositories/category_repository.dart';
 import 'package:expenseek/widgets/custom_widget.dart';
 import 'package:expenseek/widgets/pallete_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
+  late CategoryRepository categoryRepository;
   RxInt screenActive = 0.obs;
   RxList<CategoryModel> categories = <CategoryModel>[].obs;
   RxList<CategoryModel> filterCategories = <CategoryModel>[].obs;
@@ -29,12 +31,13 @@ class HomeController extends GetxController {
   @override
   void onReady() {
     super.onReady();
+    categoryRepository = CategoryRepository();
     loadExpenses();
     loadCategories();
   }
 
   void loadCategories() async {
-    var result = await DbHelper.getAllCategories();
+    var result = await categoryRepository.getAllCategories();
 
     categories.value = result;
     filterCategories.value = result.toList();
@@ -57,7 +60,7 @@ class HomeController extends GetxController {
   void addCategory() async {
     print(colorName.value);
     if (categoryNameController.text.isNotEmpty) {
-      var result = await DbHelper.insertCategory(
+      var result = await categoryRepository.insertCategory(
           categoryNameController.text.trim(), colorName.value);
 
       if (result != 0) {
