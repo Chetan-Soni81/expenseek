@@ -1,6 +1,5 @@
 import 'package:expenseek/exceptions/app_exceptions.dart';
 import 'package:expenseek/helpers/table_helper.dart';
-import 'package:expenseek/models/profile_model.dart';
 import 'package:expenseek/models/user_model.dart';
 import 'package:expenseek/repositories/base_repository.dart';
 import 'package:expenseek/utils/logger.dart';

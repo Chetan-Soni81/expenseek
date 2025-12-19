@@ -1,7 +1,6 @@
 import 'package:expenseek/exceptions/app_exceptions.dart';
 import 'package:expenseek/helpers/db_types.dart';
 import 'package:expenseek/helpers/table_helper.dart';
-import 'package:expenseek/models/base_model.dart';
 import 'package:expenseek/utils/logger.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 
