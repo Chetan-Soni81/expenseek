@@ -1,7 +1,11 @@
 import 'package:expenseek/controllers/home_controller.dart';
 import 'package:expenseek/helpers/format_helper.dart';
 import 'package:expenseek/widgets/custom_widget.dart';
+import 'package:expenseek/widgets/date_filter_widget.dart';
+import 'package:expenseek/widgets/empty_states.dart';
+import 'package:expenseek/widgets/loading_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 //Home Panel
 Widget homePanel({required BuildContext context, required HomeController c}) {
@@ -90,6 +94,7 @@ Widget homePanel({required BuildContext context, required HomeController c}) {
       const SizedBox(
         height: 12,
       ),
+      dateFilterSelector(c),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: minimalistDropDown(
@@ -99,7 +104,21 @@ Widget homePanel({required BuildContext context, required HomeController c}) {
         ),
       ),
       Expanded(
-        child: ListView.builder(
+        child: Obx(() {
+          if (c.isLoading.value && c.filteredExpenses.isEmpty) {
+            return ListView.builder(
+              itemCount: 5,
+              itemBuilder: (context, index) => expenseCardSkeleton(),
+            );
+          }
+          
+          if (c.filteredExpenses.isEmpty) {
+            return emptyExpensesState(
+              onAddExpense: () => c.doClick(),
+            );
+          }
+          
+          return ListView.builder(
           itemCount: c.filteredExpenses.length,
           itemBuilder: (context, index) => customCard(
             child: ListTile(
@@ -116,7 +135,8 @@ Widget homePanel({required BuildContext context, required HomeController c}) {
               onTap: () => c.showExpenseDialog(c.filteredExpenses.value[index].id ?? 0),
             ),
           ),
-        ),
+          );
+        }),
       )
     ],
   );
@@ -159,7 +179,22 @@ Widget categoryPanel(
         height: 12,
       ),
       Expanded(
-        child: ListView.builder(
+        child: Obx(() {
+          if (c.isLoading.value && c.categories.isEmpty) {
+            return ListView.builder(
+              itemCount: 5,
+              padding: const EdgeInsets.all(16),
+              itemBuilder: (context, index) => categoryCardSkeleton(),
+            );
+          }
+          
+          if (c.categories.isEmpty) {
+            return emptyCategoriesState(
+              onAddCategory: () => c.doClick(),
+            );
+          }
+          
+          return ListView.builder(
           itemCount: c.categories.length,
           padding: const EdgeInsets.all(16),
           itemBuilder: (context, index) => customCard(
@@ -177,7 +212,8 @@ Widget categoryPanel(
               onTap: () => c.showCategoryDialog(c.categories[index].id ?? 0),
             ),
           ),
-        ),
+          );
+        }),
       )
     ],
   );

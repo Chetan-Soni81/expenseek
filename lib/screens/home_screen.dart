@@ -1,5 +1,6 @@
 import 'package:expenseek/controllers/home_controller.dart';
 import 'package:expenseek/widgets/home_widgets.dart';
+import 'package:expenseek/widgets/loading_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,10 +18,14 @@ class HomeScreen extends StatelessWidget {
       //   ],
       //   elevation: 0,
       // ),
-      floatingActionButton: Obx(() => c.screenActive.value != 1 ? FloatingActionButton(
+      floatingActionButton: Obx(() => c.screenActive.value != 1 
+        ? 
+              FloatingActionButton(
+                heroTag: "add",
         onPressed: () => c.doClick(),
         child: const Icon(Icons.add),
-      ) : const SizedBox.shrink(),
+              )
+        : const SizedBox.shrink(),
       ),
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
@@ -49,9 +54,10 @@ class HomeScreen extends StatelessWidget {
               ),
             ]),
       ),
-      body: Center(
-        
-        child: Obx(() => PageView(
+      body: Obx(() => loadingOverlay(
+        isLoading: c.isLoading.value,
+        child: Center(
+          child: PageView(
               controller: c.pageController,
               children: [
                 homePanel(context: context, c: c),
@@ -61,8 +67,9 @@ class HomeScreen extends StatelessWidget {
               onPageChanged: (i) {
                 c.screenActive.value = i;
               },
+          ),
+        ),
             )),
-      ),
     );
   }
 }

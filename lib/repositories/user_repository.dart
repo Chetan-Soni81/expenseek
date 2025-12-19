@@ -1,7 +1,9 @@
+import 'package:expenseek/exceptions/app_exceptions.dart';
 import 'package:expenseek/helpers/table_helper.dart';
 import 'package:expenseek/models/profile_model.dart';
 import 'package:expenseek/models/user_model.dart';
 import 'package:expenseek/repositories/base_repository.dart';
+import 'package:expenseek/utils/logger.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 
 class UserRepository extends BaseRepository {
@@ -12,34 +14,35 @@ class UserRepository extends BaseRepository {
      
      var users = fromJsonToModel(results);
 
-     return users.first.username ?? "";
+     return users.isNotEmpty ? (users.first.username ?? "") : "";
   } 
-  catch (e) 
+  catch (e, stackTrace) 
   {
-    print(e);
-    return "";
+    AppLogger.error('Failed to check if user exists', e, stackTrace);
+    throw DatabaseException('Failed to check user existence: ${e.toString()}');
   }
  }
 
  Future<int> registerUser(UserModel user) async {
   try 
   {
-    var result = dbHelper.insertRecord(TableHelper.tblUser, user.toJson(), sql.ConflictAlgorithm.replace);
+    var result = await dbHelper.insertRecord(TableHelper.tblUser, user.toJson(), sql.ConflictAlgorithm.replace);
     return result;
   }
-  catch (e) 
+  catch (e, stackTrace) 
   {
-    return 0;
+    AppLogger.error('Failed to register user', e, stackTrace);
+    throw DatabaseException('Failed to register user: ${e.toString()}');
   }
  }
 
  Future<String?> loginUser(UserModel user) async {
   try {
-    var result = dbHelper.queryValue<String?>(sqlQuery: 'select username from ${TableHelper.tblUser} where username = ? and pin = ?', args: [user.username, user.pin]);
+    var result = await dbHelper.queryValue<String?>(sqlQuery: 'select username from ${TableHelper.tblUser} where username = ? and pin = ?', args: [user.username, user.pin]);
     return result;
-  } catch(e) {
-    print(e);
-    return null;
+  } catch(e, stackTrace) {
+    AppLogger.error('Failed to login user', e, stackTrace);
+    throw DatabaseException('Failed to login user: ${e.toString()}');
   }
  }
 

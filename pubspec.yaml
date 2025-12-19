@@ -39,6 +39,9 @@ dependencies:
   pinput: ^5.0.0
   flutter_colorpicker: ^1.0.3
   intl: ^0.20.0
+  logger: ^2.0.2+1
+  get_it: ^7.6.4
+  table_calendar: ^3.0.9
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -54,6 +57,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
+  mockito: ^5.4.4
+  build_runner: ^2.4.7
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -1,15 +1,22 @@
 import 'dart:io';
+import 'package:expenseek/di/service_locator.dart';
 import 'package:expenseek/screens/entry_screen.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
   if (Platform.isWindows || Platform.isLinux || Platform.isAndroid) {
     // Initialize FFI
     sqfliteFfiInit();
   }
+  
+  // Initialize dependency injection
+  await setupServiceLocator();
+  
   runApp(const MyApp());
 }
 

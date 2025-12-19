@@ -1,4 +1,3 @@
-import 'package:expenseek/interfaces/serializable.dart';
 import 'package:expenseek/models/base_model.dart';
 import 'package:expenseek/models/category_model.dart';
 
@@ -13,7 +12,7 @@ class ExpenseModel extends BaseModel {
   double get amount => _amount;
   String get description => _description;
 
-  ExpenseModel({required String title, required double amount, required String description, CategoryModel? category}) : super(id: 0) {
+  ExpenseModel({required String title, required double amount, required String description, CategoryModel? category, int? id}) : super(id: id ?? 0) {
     _title = title;
     _amount = amount;
     _description = description;
